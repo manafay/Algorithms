@@ -1,9 +1,7 @@
 public class ReverseIndex {
 
     public Node reverse(Node source) {
-        Node target = new Node();
-        target.item = source.item;
-        source = source.next;
+        Node target = null;
         while(source != null) {
             Node temp = new Node();
             temp.item = source.item;
@@ -14,17 +12,38 @@ public class ReverseIndex {
         return target;
     }
 
-    public Node reverseIndex(Node src, int position) {
-        if (src == null) { return null; }
+    public Node reverseIndex(Node src, Node dest, int position) {
+        if (src == null) {
+            return dest;
+        }
         if (position == 0) { return src; }
+        Node head = dest;
         Node target = new Node();
-        int i = 0;
-        while (i < position) {
+        target.item = src.item;
+        Node top = target;
+        src = src.next;
+        Node iter = src;
+        int i = position - 1;
+        while (iter != null && i > 0) {
 
+            target.next = new Node();
+            target = target.next;
+            target.item = iter.item;
+            iter = iter.next;
+            -- i;
+        }
+        System.out.println(dest != null);
+        Node temp = head;
+        if (head != null) {
+            while(temp.next != null) {
+                temp = temp.next;
+            }
+            temp.next = reverse(top);
+        } else {
+            head = reverse(top);
         }
 
-
-        return new Node();
+        return reverseIndex(iter, head, position);
     }
 
     public void printAll(Node source) {
@@ -58,9 +77,9 @@ public class ReverseIndex {
         second.next = third;
         third.next = fourth;
         fourth.next = fifth;
-
-        testReverse.printAll(testReverse.reverse(first));
-
+        fifth.next = null;
+        testReverse.printAll(testReverse.reverseIndex(first, null, 3));
+        testReverse.printAll(testReverse.reverseIndex(first, null, 5));
 
     }
 }
