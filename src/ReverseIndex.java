@@ -25,14 +25,12 @@ public class ReverseIndex {
         Node iter = src;
         int i = position - 1;
         while (iter != null && i > 0) {
-
             target.next = new Node();
             target = target.next;
             target.item = iter.item;
             iter = iter.next;
             -- i;
         }
-        System.out.println(dest != null);
         Node temp = head;
         if (head != null) {
             while(temp.next != null) {
@@ -78,8 +76,9 @@ public class ReverseIndex {
         third.next = fourth;
         fourth.next = fifth;
         fifth.next = null;
-        testReverse.printAll(testReverse.reverseIndex(first, null, 3));
         testReverse.printAll(testReverse.reverseIndex(first, null, 5));
+        System.out.println();
+        testReverse.printAll(testReverse.reverseIndex(first, null, -1));
 
     }
 }
