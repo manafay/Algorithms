@@ -1,6 +1,6 @@
 public class StockSpan {
 
-    // worst case solution
+    // worst case solution with Time Complexity O(n^2)
     public int[] calculateStockSpan(int[] prices) {
         int[] result = new int[prices.length];
         if (prices.length > 0) {
@@ -19,10 +19,28 @@ public class StockSpan {
             }
             System.out.println(result[i]);
         }
-
         return result;
     }
 
+    // best case with Time Complexity O(n)
+    public int[] efficientStockSpan(int[] prices) {
+        int[] result = new int[prices.length];
+        Stack<Integer> st = new Stack<Integer>();
+        if (prices.length > 0) {
+            st.push(0);
+        }
+        for (int i = 1; i < prices.length; ++i) {
+
+            while(!(st.isEmpty()) && prices[st.peek()] <= prices[i]) {
+                st.pop();
+            }
+            result[i] = st.isEmpty() ? (i + 1) : (i - st.peek());
+
+            st.push(i);
+            System.out.println(result[i]);
+        }
+        return result;
+    }
 
 
     public static void main(String[] args) {
@@ -30,5 +48,7 @@ public class StockSpan {
         int[] arr = new int[]{100, 80, 60, 70, 60, 75, 85};
         StockSpan test =  new StockSpan();
         test.calculateStockSpan(arr);
+
+        test.efficientStockSpan(arr);
     }
 }
