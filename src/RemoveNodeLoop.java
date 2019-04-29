@@ -30,27 +30,29 @@ public class RemoveNodeLoop {
 
 
     // without using extra memory
-    public NodeVisited removeAndDetectLoop(NodeVisited source) {
-        NodeVisited head = source;
-        NodeVisited temp = source;
+    public Node removeAndDetectLoop(Node source) {
+        Node top = source;
+        Node twoSteps = source;
+        int i = 0;
         while(source != null) {
-            if (source.visit > 1) {
-                temp.next = null;
-            } else {
-                source.visit += 1;
-                temp = source;
+            if (source.item == twoSteps.item && i > 0) {
+                source.next = null;
+                break;
             }
+            twoSteps = twoSteps.next.next;
             source = source.next;
+            ++i;
         }
-        return head;
+        return top;
     }
 
     public void printAll(Node source) {
         while(source != null) {
             System.out.print(source.item);
-            System.out.println("*******");
+            System.out.print(" -> ");
             source = source.next;
         }
+        System.out.print("null");
     }
 
     public void printAllVertices(NodeVisited source) {
@@ -105,9 +107,9 @@ public class RemoveNodeLoop {
         thirdv.next = fourthv;
         fourthv.next = fifthv;
         fifthv.next = secondv;
-        System.out.println("With using Extra memory. That is, Identity hash map");
-        removeLoop.printAll(removeLoop.detectAndRemoveLoop(first));
+//        System.out.println("With using Extra memory. That is, Identity hash map");
+//        removeLoop.printAll(removeLoop.detectAndRemoveLoop(first));
         System.out.println("Without using Extra memory. That is, by adding a visit parameter in the node class");
-        removeLoop.printAllVertices(removeLoop.removeAndDetectLoop(firstv));
+        removeLoop.printAll(removeLoop.removeAndDetectLoop(first));
     }
 }

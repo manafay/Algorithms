@@ -14,7 +14,9 @@ class HashMapList {
         ArrayList<Pair<String, Integer>> searchList = hashList.get(hashKey);
         for (int i = 0; i < searchList.size(); ++i) {
             Pair<String, Integer> item = searchList.get(i);
-                return item.get(k);
+            if(item.getKey().equals(k)) {
+                return item.getValue();
+            }
         }
         return 0;
     }
@@ -51,12 +53,13 @@ class HashMapList {
         System.out.println("Hello World");
         HashMapList test = new HashMapList();
         test.put("Nafay", 13);
+        test.put("Azhar", 25);
         test.put("Fatima", 13);
         test.put("Ammi", 5);
         System.out.println(test.get("Nafay"));
-        System.out.println(test.get("Fatima"));
-        test.remove("Fatima");
-        System.out.println(test.get("Fatima"));
+        System.out.println(test.get("Azhar"));
+        test.remove("Azhar");
+        System.out.println(test.get("Nafay"));
     }
 
 
