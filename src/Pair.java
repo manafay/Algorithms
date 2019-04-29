@@ -7,10 +7,6 @@ public class Pair<T, U> {
         this.value = value;
     }
 
-    public U get(T key) {
-        return this.value;
-    }
-
     public T getKey() {
         return key;
     }
