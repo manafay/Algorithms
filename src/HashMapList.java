@@ -1,10 +1,9 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 class HashMapList<T, U> {
     private ArrayList<ArrayList<Pair<T, U>>> hashList = new  ArrayList<>(Collections.nCopies(100,null));
+    private int hashCount = 0;
+
 
     private int getHash(T k) {
         return k.toString().length() % 100;
@@ -13,20 +12,26 @@ class HashMapList<T, U> {
     public class Iterator<T, U> {
         private ArrayList<Pair<T, U>> iterList = new ArrayList<>();
         private int iter;
+        private int iterHashCount = 0;
 
         private ArrayList randomHead() {
             // how do I check if the hashMap is not null or at least there is one insertion in place
             Random rand = new Random();
             int pick = rand.nextInt(100);
-            return hashList.get(pick) != null ? hashList.get(4) : randomHead();
+            return hashList.get(pick) != null ? hashList.get(pick) : randomHead();
         }
 
         Iterator() {
            iterList = randomHead();
            iter = -1;
+           iterHashCount = hashCount;
         }
 
         public boolean hasNext() {
+            if (iterHashCount != hashCount)
+            {
+                throw new ConcurrentModificationException("Failed as iterator has changed");
+            }
             int nextIndex = iter + 1;
             if (iterList.size() > nextIndex) {
                 return iterList.get(nextIndex) != null;
@@ -35,6 +40,10 @@ class HashMapList<T, U> {
         }
 
         public U next() {
+            if (iterHashCount != hashCount)
+            {
+                throw new ConcurrentModificationException("Failed as iterator has changed");
+            }
             return iterList.get(++iter).getValue();
         }
     }
@@ -60,7 +69,7 @@ class HashMapList<T, U> {
             newList.add(new Pair(k, v));
             hashList.set(hashKey, newList);
         }
-
+        ++hashCount;
     }
 
     public void remove(T k) {
@@ -95,7 +104,26 @@ class HashMapList<T, U> {
         System.out.println(test.get("Azhar"));
         test.remove("Azhar");
         System.out.println(test.get("Nafay"));
+        test.put("John", 6);
+        try
+        {
+            while (firstIter.hasNext()) {
+                System.out.print("********");
+                System.out.println(firstIter.next());
+                System.out.print("********");
+            }
+        }
 
+        catch (ConcurrentModificationException e)
+        {
+            System.out.println("Concurrent Modification exception was thrown");
+        }
+        HashMapList<String, Integer>.Iterator<String, Integer> secondIter = test.new Iterator<String, Integer>();
+        while(secondIter.hasNext()) {
+            System.out.print("********Second*********");
+            System.out.println(secondIter.next());
+            System.out.print("********");
+        }
 
 //        HashMapList<String, String> test2 = new HashMapList();
 //        test2.put("Nafay", "Soccer");
