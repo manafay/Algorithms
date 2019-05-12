@@ -1,5 +1,5 @@
-public class Node {
-        int item;
+public class Node<T> {
+        T item;
         Node next;
         Node randomNext;
 

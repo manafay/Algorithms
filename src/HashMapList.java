@@ -3,10 +3,24 @@ import java.util.*;
 class HashMapList<T, U> {
     private ArrayList<ArrayList<Pair<T, U>>> hashList = new  ArrayList<>(Collections.nCopies(100,null));
     private int hashCount = 0;
-
+    private Node order;
 
     private int getHash(T k) {
         return k.toString().length() % 100;
+    }
+
+    private void insertOrder(T k) {
+        Node newItem = new Node();
+        newItem.item = k;
+        if (order == null) {
+            order = newItem;
+        } else {
+            Node temp = order;
+            while(temp.next != null) {
+                temp = temp.next;
+            }
+            temp.next = newItem;
+        }
     }
 
     public class Iterator<T, U> {
@@ -69,6 +83,7 @@ class HashMapList<T, U> {
             newList.add(new Pair(k, v));
             hashList.set(hashKey, newList);
         }
+        insertOrder(k);
         ++hashCount;
     }
 
